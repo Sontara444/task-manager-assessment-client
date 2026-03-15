@@ -13,6 +13,7 @@ export const fetchApi = async (endpoint, options = {}) => {
   const config = {
     ...options,
     headers,
+    credentials: 'include'
   };
 
   const response = await fetch(url, config);
