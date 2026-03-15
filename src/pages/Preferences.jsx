@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { User, Lock, Save, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { User, Lock, Save, AlertCircle, CheckCircle2, Menu } from 'lucide-react';
 import Sidebar from '../components/Sidebar';
 import { fetchApi } from '../services/api';
 import './Preferences.css';
@@ -17,6 +17,7 @@ export default function Preferences() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
     if (!user) {
@@ -79,12 +80,20 @@ export default function Preferences() {
 
   return (
     <div className="dashboard-layout">
-      <Sidebar />
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
       <div className="dashboard-content">
         <header className="dashboard-header-modern">
+          <button className="menu-toggle-btn" onClick={() => setIsSidebarOpen(true)}>
+            <Menu size={24} />
+          </button>
           <div>
             <h1 className="dashboard-title-modern">Preferences</h1>
             <p className="dashboard-subtitle-modern">Manage your account settings and security</p>
+          </div>
+          <div className="header-profile" onClick={() => navigate('/preferences')} style={{ cursor: 'pointer' }} title="User Preferences">
+            <div className="profile-avatar">
+              {user?.name?.[0]?.toUpperCase() || 'U'}
+            </div>
           </div>
         </header>
 

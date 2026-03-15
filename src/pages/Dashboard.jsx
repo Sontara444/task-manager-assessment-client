@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { Plus, Search, Filter, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Plus, Search, Filter, X, ChevronLeft, ChevronRight, Menu } from 'lucide-react';
 import TaskList from '../components/TaskList';
 import TaskModal from '../components/TaskModal';
 import Sidebar from '../components/Sidebar';
@@ -23,6 +23,7 @@ export default function Dashboard() {
   
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const hasActiveFilters = search || statusFilter !== 'ALL' || priorityFilter !== 'ALL' || sortOrder !== 'newest';
 
@@ -114,14 +115,17 @@ export default function Dashboard() {
 
   return (
     <div className="dashboard-layout">
-      <Sidebar />
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
       <div className="dashboard-content">
         <header className="dashboard-header-modern">
+          <button className="menu-toggle-btn" onClick={() => setIsSidebarOpen(true)}>
+            <Menu size={24} />
+          </button>
           <div className="header-greeting">
             <h1>Welcome back, {user?.name?.split(' ')[0] || 'User'} 👋</h1>
             <p>Heres what's happening with your projects today.</p>
           </div>
-          <div className="header-profile">
+          <div className="header-profile" onClick={() => navigate('/preferences')} style={{ cursor: 'pointer' }} title="User Preferences">
             <div className="profile-avatar">
               {user?.name?.[0]?.toUpperCase() || 'U'}
             </div>
@@ -141,50 +145,52 @@ export default function Dashboard() {
                 />
               </div>
               
-              <div className="filter-box-modern">
-                <Filter size={18} className="filter-icon" />
-                <select 
-                  value={statusFilter} 
-                  onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }}
-                >
-                  <option value="ALL">All Status</option>
-                  <option value="TODO">To Do</option>
-                  <option value="IN_PROGRESS">In Progress</option>
-                  <option value="COMPLETED">Completed</option>
-                </select>
-              </div>
+              <div className="filter-group-modern">
+                <div className="filter-box-modern">
+                  <Filter size={18} className="filter-icon" />
+                  <select 
+                    value={statusFilter} 
+                    onChange={(e) => { setStatusFilter(e.target.value); setPage(1); }}
+                  >
+                    <option value="ALL">All Status</option>
+                    <option value="TODO">To Do</option>
+                    <option value="IN_PROGRESS">In Progress</option>
+                    <option value="COMPLETED">Completed</option>
+                  </select>
+                </div>
 
-              <div className="filter-box-modern">
-                <select 
-                  value={priorityFilter} 
-                  onChange={(e) => { setPriorityFilter(e.target.value); setPage(1); }}
-                >
-                  <option value="ALL">All Priority</option>
-                  <option value="HIGH">High</option>
-                  <option value="MEDIUM">Medium</option>
-                  <option value="LOW">Low</option>
-                </select>
-              </div>
+                <div className="filter-box-modern">
+                  <select 
+                    value={priorityFilter} 
+                    onChange={(e) => { setPriorityFilter(e.target.value); setPage(1); }}
+                  >
+                    <option value="ALL">All Priority</option>
+                    <option value="HIGH">High</option>
+                    <option value="MEDIUM">Medium</option>
+                    <option value="LOW">Low</option>
+                  </select>
+                </div>
 
-              <div className="filter-box-modern">
-                <select 
-                  value={sortOrder} 
-                  onChange={(e) => { setSortOrder(e.target.value); setPage(1); }}
-                >
-                  <option value="newest">Newest</option>
-                  <option value="oldest">Oldest</option>
-                </select>
+                <div className="filter-box-modern">
+                  <select 
+                    value={sortOrder} 
+                    onChange={(e) => { setSortOrder(e.target.value); setPage(1); }}
+                  >
+                    <option value="newest">Newest</option>
+                    <option value="oldest">Oldest</option>
+                  </select>
+                </div>
               </div>
 
               {hasActiveFilters && (
                 <button className="btn-clear-filters" onClick={clearFilters}>
-                  <X size={14} /> Clear
+                  <X size={14} /> Clear Filters
                 </button>
               )}
             </div>
             
             <button 
-              className="btn-primary-modern" 
+              className="btn-primary-modern desktop-add-btn" 
               onClick={() => { setEditingTask(null); setIsModalOpen(true); }}
             >
               <Plus size={18} /> Add New Task
@@ -223,6 +229,14 @@ export default function Dashboard() {
             onSave={handleSaveTask}
           />
         )}
+
+        <button 
+          className="mobile-fab" 
+          onClick={() => { setEditingTask(null); setIsModalOpen(true); }}
+          aria-label="Add Task"
+        >
+          <Plus size={28} />
+        </button>
       </div>
     </div>
   );

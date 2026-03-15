@@ -54,57 +54,47 @@ export default function TaskList({ tasks, onEdit, onDelete, onToggleComplete }) 
           <div className="task-row-main">
             <div className="task-row-header">
               <h3 className="task-title">{task.title}</h3>
+            </div>
+            <p className="task-desc">{decrypt(task.description)}</p>
+            <div className="task-badges">
               <div className={`task-badge badge-${task.status.toLowerCase()}`}>
                 {getStatusIcon(task.status)}
                 <span>{getStatusText(task.status)}</span>
               </div>
               {task.priority && (
                 <span className="priority-badge" style={{ color: getPriorityColor(task.priority) }}>
-                  {task.priority.charAt(0) + task.priority.slice(1).toLowerCase()}
+                  {task.priority.charAt(0).toUpperCase() + task.priority.slice(1).toLowerCase()}
                 </span>
               )}
             </div>
-            <p className="task-desc">{decrypt(task.description)}</p>
           </div>
 
           <div className="task-row-footer">
             <div className="task-dates">
               <span className="task-date">
-                <Clock size={14} style={{ marginRight: '4px' }} />
-                Created: {formatDate(task.createdAt)}
+                <CalendarClock size={12} style={{ marginRight: '4px' }} />
+                {formatDate(task.createdAt)}
               </span>
-              {task.dueDate && (
-                <span className={`task-due-date ${isOverdue(task.dueDate, task.status) ? 'overdue' : ''}`}>
-                  <CalendarClock size={14} style={{ marginRight: '4px' }} />
-                  Due: {formatDate(task.dueDate)}
-                </span>
-              )}
             </div>
             <div className="task-actions">
               <button
                 className={`btn-icon btn-complete ${task.status === 'COMPLETED' ? 'completed' : ''}`}
-                title={task.status === 'COMPLETED' ? 'Mark as To Do' : 'Mark as Complete'}
                 onClick={() => onToggleComplete(task)}
               >
-                {task.status === 'COMPLETED' ? <CheckCircle size={16} /> : <Check size={16} />}
+                {task.status === 'COMPLETED' ? <CheckCircle size={14} /> : <Check size={14} />}
               </button>
-              <button
-                className="btn-icon btn-edit"
-                title="Edit Task"
-                onClick={() => onEdit(task)}
-              >
-                <Edit2 size={16} />
+              <button className="btn-icon btn-edit" onClick={() => onEdit(task)}>
+                <Edit2 size={14} />
               </button>
               <button
                 className="btn-icon btn-delete"
-                title="Delete Task"
                 onClick={() => {
-                  if (window.confirm('Are you sure you want to delete this task?')) {
+                  if (window.confirm('Delete this task?')) {
                     onDelete(task._id);
                   }
                 }}
               >
-                <Trash2 size={16} />
+                <Trash2 size={14} />
               </button>
             </div>
           </div>
