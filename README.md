@@ -90,4 +90,4 @@ https://task-manager-assessment-server.onrender.com
 
 ## 📝 Credentials for Testing
 - **Email**: test@example.com
-- **Password**: password123
+- **Password**: password1234
