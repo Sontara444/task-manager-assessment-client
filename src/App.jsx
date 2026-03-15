@@ -6,6 +6,8 @@ import Dashboard from './pages/Dashboard';
 import Activity from './pages/Activity';
 import Preferences from './pages/Preferences';
 
+import ProtectedRoute from './components/ProtectedRoute';
+
 function App() {
   return (
     <AuthProvider>
@@ -13,9 +15,30 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/activity" element={<Activity />} />
-          <Route path="/preferences" element={<Preferences />} />
+          <Route 
+            path="/dashboard" 
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/activity" 
+            element={
+              <ProtectedRoute>
+                <Activity />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/preferences" 
+            element={
+              <ProtectedRoute>
+                <Preferences />
+              </ProtectedRoute>
+            } 
+          />
           <Route path="/" element={<Navigate to="/dashboard" replace />} />
         </Routes>
       </Router>

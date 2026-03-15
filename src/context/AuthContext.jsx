@@ -11,11 +11,6 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        setLoading(false);
-        return;
-      }
       try {
         const data = await fetchApi('/auth/me');
         if (data.success && data.data) {
@@ -72,7 +67,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={{ user, setUser, login, register, logout, loading }}>
-        {!loading && children}
+      {!loading && children}
     </AuthContext.Provider>
   );
 };
