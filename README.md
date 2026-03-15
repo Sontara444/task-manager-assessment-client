@@ -1,53 +1,93 @@
-# Frontend - Task Management Dashboard
+# 💻 Pro Task Manager - Frontend
 
-A premium, highly interactive React dashboard for managing tasks with advanced filtering, real-time feedback, and secure state management.
+The frontend of the Task Management Application, built with **Vite** and **React**. It features a premium glassmorphism UI and secure, encrypted communication with the backend.
+
+---
+
+## 🚀 Key Features
+- **AES-256 Decryption**: Automatically decrypts sensitive task data for display while keeping it secure during transit.
+- **Session Persistence**: Custom persistent login logic that restores user state on page refresh.
+- **Global Search & Filter**: Real-time search combined with complex status and priority filtering.
+- **Server-Side Pagination**: Efficient chevrons for navigating large task lists (8 items per page).
+- **Protected Routes**: Dedicated `ProtectedRoute` wrapper for secure page access.
+
+## 🏗️ Architecture
+- **Framework**: Vite + React
+- **Context API**: Centralized `AuthContext` for global session management.
+- **Service Layer**: Decoupled `api.js` service with `credentials: 'include'` support.
+- **Styling**: Modern Vanilla CSS with glassmorphism effects.
+
+## 🛠️ Setup Instructions
+1. Navigate to directory: `cd client`
+2. Install dependencies: `npm install`
+3. Create a `.env` file:
+   ```env
+   VITE_API_URL=http://localhost:5000/api
+   VITE_ENCRYPTION_KEY=12345678901234567890123456789012
+   ```
+4. Start development server: `npm run dev`
+
+---
+# 💻 Pro Task Manager – Frontend
+
+Frontend for the Task Management Application built with **React + Vite**.
+Provides a modern UI with secure communication with the backend API.
+
+---
+
+## 🚀 Features
+
+* Protected routes for authenticated pages
+* Global search with multi-filter (Status & Priority)
+* Dynamic Activity Hub (Task Statistics)
+* Overdue task highlighting & tactile micro-animations
+* User profile & password management
+* Refresh-resilient persistent login sessions
+* Premium Glassmorphism UI
+
+---
 
 ## 🏗 Architecture
-- **Framework**: React (Vite)
-- **Styling**: Modern Vanilla CSS
-- **Icons**: Lucide React
-- **State Management**: React Context API (AuthContext)
-- **Utilities**: Custom `fetchApi` logic for secure, encrypted communication.
 
-## 🚀 Key Features & Additional Implementations
-
-### Dashboard Experience
-- **Interactive List**: High-performance task list with clean status badges and priority indicators.
-- **Micro-Animations**: Uses scaling and color transitions for a premium, tactile feel.
-- **Quick Complete**: A custom toggle button that allows marking tasks as done without opening a modal.
-- **Overdue Highlighting**: Tasks past their due date automatically flash **red** with a warning icon.
-
-### Functional Pages
-- **Activity Hub**: Visualized stats for task distribution (Status & Priority).
-- **Preferences**: A robust page to manage user profile details and reset passwords.
-- **Authentication**: Fully functional Login/Register flows with error handling.
-
-### Search & Productivity
-- **Real-time Search**: Instant filtering as you type.
-- **Complex Filters**: Combine status, priority, and sort orders seamlessly.
-- **Pagination**: Minimalist chevrons with a page counter (8 items per page).
+* **Framework:** React + Vite
+* **State Management:** Context API (`AuthContext`)
+* **Service Layer:** Centralized `api.js` for API requests
+* **Routing:** React Router with `ProtectedRoute`
+* **Styling:** Vanilla CSS
 
 ---
 
-## ⚙️ Setup Instructions
+## ⚙ Setup
 
-1. **Install Dependencies**:
-   ```bash
-   npm install
-   ```
+```bash
+cd client
+npm install
+```
 
-2. **Run the Client**:
-   ```bash
-   npm run dev
-   ```
+Create `.env`
+
+```env
+VITE_API_URL=http://localhost:5000/api
+```
+
+Run development server
+
+```bash
+npm run dev
+```
 
 ---
 
-## 🎨 Design System
-- **Font**: Inter / Roboto (via Google Fonts).
-- **Color Palette**: 
-    - Primary Blue: `#2563eb`
-    - Success Green: `#16a34a`
-    - Danger Red: `#ef4444`
-    - Warning Amber: `#d97706`
-- **Glassmorphism**: Subtle shadows and borders used for a premium, modern aesthetic.
+## 🌐 API Connection
+
+The frontend communicates with the backend API for authentication and task management.
+
+Backend API:
+
+```
+https://task-manager-assessment-server.onrender.com
+```
+
+## 📝 Credentials for Testing
+- **Email**: test@example.com
+- **Password**: password123
