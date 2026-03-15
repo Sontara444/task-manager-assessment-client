@@ -11,15 +11,22 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const checkAuth = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setLoading(false);
+        return;
+      }
       try {
         const data = await fetchApi('/auth/me');
         if (data.success && data.data) {
           setUser(data.data);
         } else {
           setUser(null);
+          localStorage.removeItem('token');
         }
       } catch (err) {
         setUser(null);
+        localStorage.removeItem('token');
       } finally {
         setLoading(false);
       }
@@ -33,6 +40,7 @@ export const AuthProvider = ({ children }) => {
       body: JSON.stringify({ email, password })
     });
     if (data.success) {
+      localStorage.setItem('token', data.token);
       setUser(data.data);
       return data.data;
     }
@@ -45,6 +53,7 @@ export const AuthProvider = ({ children }) => {
       body: JSON.stringify({ name, email, password })
     });
     if (data.success) {
+      localStorage.setItem('token', data.token);
       setUser(data.data);
       return data.data;
     }
@@ -57,6 +66,7 @@ export const AuthProvider = ({ children }) => {
     } catch (e) {
       console.error(e);
     }
+    localStorage.removeItem('token');
     setUser(null);
   };
 
