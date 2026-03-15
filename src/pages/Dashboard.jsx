@@ -34,9 +34,9 @@ export default function Dashboard() {
     setPage(1);
   };
 
-  const fetchTasks = async (silent = false) => {
+  const fetchTasks = async () => {
     try {
-      if (!silent) setLoading(true);
+      setLoading(true);
       
       const queryParams = new URLSearchParams();
       queryParams.append('page', page);
@@ -55,7 +55,7 @@ export default function Dashboard() {
     } catch (err) {
       console.error('Failed to fetch tasks:', err);
     } finally {
-      if (!silent) setLoading(false);
+      setLoading(false);
     }
   };
 
@@ -68,63 +68,47 @@ export default function Dashboard() {
   }, [user, navigate, search, statusFilter, priorityFilter, sortOrder, page]);
 
   const handleSaveTask = async (taskData) => {
-    const originalTasks = [...tasks];
     try {
       if (taskData.id) {
-        setTasks(prev => prev.map(t => t._id === taskData.id ? { ...t, ...taskData } : t));
-        setIsModalOpen(false);
-        setEditingTask(null);
-        
         await fetchApi(`/tasks/${taskData.id}`, {
           method: 'PUT',
           body: JSON.stringify(taskData)
         });
       } else {
-        setIsModalOpen(false);
-        setEditingTask(null);
         await fetchApi('/tasks', {
           method: 'POST',
           body: JSON.stringify(taskData)
         });
       }
-      fetchTasks(true);
+      setIsModalOpen(false);
+      setEditingTask(null);
+      fetchTasks();
     } catch (err) {
       console.error('Failed to save task:', err);
-      setTasks(originalTasks);
       alert(err.message || 'Failed to save task');
-      fetchTasks();
     }
   };
 
   const handleDeleteTask = async (taskId) => {
-    const originalTasks = [...tasks];
-    setTasks(prev => prev.filter(t => t._id !== taskId));
-    
     try {
       await fetchApi(`/tasks/${taskId}`, { method: 'DELETE' });
-      fetchTasks(true);
+      fetchTasks();
     } catch (err) {
       console.error('Failed to delete task:', err);
-      setTasks(originalTasks);
       alert(err.message || 'Failed to delete task');
     }
   };
 
   const handleToggleComplete = async (task) => {
-    const originalTasks = [...tasks];
-    const newStatus = task.status === 'COMPLETED' ? 'TODO' : 'COMPLETED';
-    
-    setTasks(prev => prev.map(t => t._id === task._id ? { ...t, status: newStatus } : t));
-    
     try {
+      const newStatus = task.status === 'COMPLETED' ? 'TODO' : 'COMPLETED';
       await fetchApi(`/tasks/${task._id}`, {
         method: 'PUT',
         body: JSON.stringify({ status: newStatus })
       });
-      fetchTasks(true);
+      fetchTasks();
     } catch (err) {
       console.error('Failed to update task:', err);
-      setTasks(originalTasks);
     }
   };
 
